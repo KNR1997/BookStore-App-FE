@@ -14,7 +14,6 @@ function App() {
       <Navbar />
       <ExploreTopBooks />
       <Carousel />
-      <ReturnBook />
       <Heros />
       <LibraryServices />
       <Footer />
