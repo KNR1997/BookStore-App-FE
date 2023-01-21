@@ -15,9 +15,11 @@ export const SearchBooksPage = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [search, setSearch] = useState('');
     const [searchUrl, setSearchUrl] = useState('');
+    const [category, setCategory] = useState('');
 
     useEffect(() => {
         const fetchBooks = async () => {
+            console.log('fetch books async call');
             const baseUrl: string = "http://localhost:8080/api/books";
 
             let url: string = '';
@@ -64,7 +66,7 @@ export const SearchBooksPage = () => {
             setHttpError(error.message);
         })
         window.scrollTo(0, 0);
-    }, [currentPage, searchUrl]);
+    }, [currentPage, searchUrl, category]);
 
     if (isLoading) {
         return (
@@ -81,12 +83,32 @@ export const SearchBooksPage = () => {
     }
 
     const searchHandleChange = () => {
+        // console.log('search btn clicked');
         if (search === '') {
             setSearchUrl('');
         } else {
             setSearchUrl(`/search/findByTitleContaining?title=${search}&page=0&size=${booksPerPage}`)
         }
     }
+
+    const categoryField = (value: string) => {
+        if (
+            value.toLowerCase() === 'fe' ||
+            value.toLowerCase() === 'be' ||
+            value.toLowerCase() === 'data' ||
+            value.toLowerCase() === 'devops'
+        ) {
+            setCategory(value);
+            setSearchUrl(`/search/findByCategoryContaining?category=${value}&page=0&size=${booksPerPage}`)
+        } else {
+            setCategory('All');
+            setSearchUrl(`?page=0&size=${booksPerPage}`)
+        }
+    }
+
+    // const btnclicked = () => {
+    //     console.log('btn clicked 2');
+    // }
 
     const indexOfLastBook: number = currentPage * booksPerPage;
     const indexOfFirstBook: number = indexOfLastBook - booksPerPage;
@@ -106,7 +128,7 @@ export const SearchBooksPage = () => {
                                     placeholder='Search' aria-labelledby='Search' 
                                     onChange={e => setSearch(e.target.value)}/>
                                 <button className='btn btn-outline-success'
-                                    onClick={() => searchHandleChange}>
+                                    onClick={() => searchHandleChange()}>
                                     Search
                                 </button>
                             </div>
@@ -116,30 +138,30 @@ export const SearchBooksPage = () => {
                                 <button className='btn btn-secondary dropdown-toggle' type='button'
                                     id='dropdownMenuButton1' data-bs-toggle='dropdown'
                                     aria-expanded='false'>
-                                    Category
+                                    {category}
                                 </button>
                                 <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton1'>
-                                    <li>
+                                    <li onClick={() => categoryField('All')}>
                                         <a className='dropdown-item' href='#'>
                                             All
                                         </a>
                                     </li>
-                                    <li>
+                                    <li onClick={() => categoryField('FE')}>
                                         <a className='dropdown-item' href='#'>
                                             Front End
                                         </a>
                                     </li>
-                                    <li>
+                                    <li onClick={() => categoryField('BE')}>
                                         <a className='dropdown-item' href='#'>
                                             Back End
                                         </a>
                                     </li>
-                                    <li>
+                                    <li onClick={() => categoryField('DATA')}>
                                         <a className='dropdown-item' href='#'>
                                             Data
                                         </a>
                                     </li>
-                                    <li>
+                                    <li onClick={() => categoryField('DEVOPS')}>
                                         <a className='dropdown-item' href='#'>
                                             DevOps
                                         </a>
