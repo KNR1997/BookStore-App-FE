@@ -1,21 +1,26 @@
 import React from 'react';
 import './App.css';
-import Carousel from './layouts/NavbarAndFooter/HomePage/Carousel';
-import ExploreTopBooks from './layouts/NavbarAndFooter/HomePage/ExploreTopBooks';
-import Footer from './layouts/NavbarAndFooter/HomePage/Footer';
-import Heros from './layouts/NavbarAndFooter/HomePage/Heros';
-import LibraryServices from './layouts/NavbarAndFooter/HomePage/LibraryServices';
-import ReturnBook from './layouts/NavbarAndFooter/HomePage/ReturnBook';
+import Footer from './layouts/NavbarAndFooter/Footer';
 import Navbar from './layouts/NavbarAndFooter/Navbar';
+import HomePage from './layouts/HomePage/HomePage';
+import { SearchBooksPage } from './layouts/SearchBooksPage/SearchBooksPage';
+import { Redirect, Route, Switch } from 'react-router';
 
 function App() {
   return (
     <div>
       <Navbar />
-      <ExploreTopBooks />
-      <Carousel />
-      <Heros />
-      <LibraryServices />
+      <Switch>
+        <Route path='/' exact>
+          <Redirect to='/home' />
+        </Route>
+        <Route path='/home'>
+          <HomePage/>
+        </Route>
+        <Route path='/search'>
+          <SearchBooksPage />
+        </Route>
+      </Switch>
       <Footer />
     </div>
 
